@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ENG29 2121 · Lab 03 — BJT DC Bias</title>
+  <style>
+    body{margin:0;background:#f3f7fa;color:#17344b;font:16px/1.6 Tahoma,Arial,sans-serif}
+    .shell{max-width:800px;margin:32px auto;padding:0 18px}
+    h1{color:#103658;font-size:1.8rem}
+    .card{background:#fff;border:1px solid #cedde7;border-radius:12px;padding:24px;margin-top:18px}
+    label{display:block;font-weight:700;margin-top:12px}
+    input,select{font:inherit;padding:8px 10px;border:1px solid #9db5c6;border-radius:6px;max-width:100%}
+    input{width:220px}
+    button{margin-top:20px;background:#07766e;color:#fff;border:0;border-radius:7px;padding:10px 22px;font:inherit;cursor:pointer}
+    .error{background:#fff5e8;border-left:4px solid #823c17;color:#67361f;padding:12px 15px;border-radius:4px}
+    .result{background:#e8f6f2;border-left:4px solid #07766e;padding:12px 15px;border-radius:4px}
+    .warn{background:#fff5e8;border-left:4px solid #823c17;padding:10px 12px;border-radius:4px;margin-top:10px}
+    table{border-collapse:collapse;margin-top:10px;width:100%}
+    th,td{text-align:left;padding:6px 10px;border-bottom:1px solid #cedde7}
+    th{width:40%;color:#415e71}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <h1>Lab 03 · BJT DC Bias Calculator</h1>
+  <p>เลือกวงจร กรอกค่าตามหน่วยที่แสดง แล้วกดคำนวณ (แบบจำลอง DC Forward Active)</p>
+
+  <div class="card">
+    <form method="post" action="/" id="bias-form">
+      <label for="mode">วงจรไบอัส</label>
+      <select id="mode" name="mode">
+        <option value="divider" {% if mode == "divider" %}selected{% endif %}>Voltage Divider Bias</option>
+        <option value="fixed" {% if mode == "fixed" %}selected{% endif %}>Fixed Bias</option>
+        <option value="emitter" {% if mode == "emitter" %}selected{% endif %}>Emitter Bias</option>
+      </select>
+
+      <label for="vcc">V<sub>CC</sub> (V)</label>
+      <input id="vcc" name="vcc" type="number" step="any"
+             value="{{ form.get('vcc', defaults.vcc) }}">
+
+      <label for="rc">R<sub>C</sub> (kΩ)</label>
+      <input id="rc" name="rc" type="number" step="any"
+             value="{{ form.get('rc', defaults.rc) }}">
+
+      <label for="beta">β</label>
+      <input id="beta" name="beta" type="number" step="any"
+             value="{{ form.get('beta', defaults.beta) }}">
+
+      <label for="vbe">V<sub>BE</sub> (V)</label>
+      <input id="vbe" name="vbe" type="number" step="any"
+             value="{{ form.get('vbe', defaults.vbe) }}">
+
+      <div data-only="fixed">
+        <label for="rb">R<sub>B</sub> (MΩ)</label>
+        <input id="rb" name="rb" type="number" step="any"
+               value="{{ form.get('rb', defaults.rb) }}">
+      </div>
+
+      <div data-only="emitter">
+        <label for="rb_emitter">R<sub>B</sub> (MΩ)</label>
+        <input id="rb_emitter" name="rb" type="number" step="any"
+               value="{{ form.get('rb', defaults.rb) }}">
+      </div>
+
+      <div data-only="divider">
+        <label for="r1">R<sub>1</sub> (kΩ)</label>
+        <input id="r1" name="r1" type="number" step="any"
+               value="{{ form.get('r1', defaults.r1) }}">
+        <label for="r2">R<sub>2</sub> (kΩ)</label>
+        <input id="r2" name="r2" type="number" step="any"
+               value="{{ form.get('r2', defaults.r2) }}">
+      </div>
+
+      <div data-only="divider emitter">
+        <label for="re">R<sub>E</sub> (kΩ)</label>
+        <input id="re" name="re" type="number" step="any"
+               value="{{ form.get('re', defaults.re) }}">
+      </div>
+
+      <button type="submit">คำนวณ</button>
+    </form>
+  </div>
+
+  {% if error %}
+  <div class="card error" role="alert">
+    <strong>โหมดที่เลือก:</strong> {{ mode }}<br>
+    <strong>ข้อผิดพลาด:</strong> {{ error }}
+    <p><small>ไม่มีผลคำนวณสำหรับข้อมูลรอบนี้</small></p>
+  </div>
+  {% endif %}
+
+  {% if result %}
+  <div class="card result">
+    <strong>ผลลัพธ์ · โหมด {{ mode }}</strong>
+    <table>
+      <tr><th>I<sub>C</sub></th><td>{{ "%.3f"|format(result.ic_ma) }} mA</td></tr>
+      <tr><th>V<sub>B</sub></th><td>{{ "%.3f"|format(result.vb_v) }} V</td></tr>
+      <tr><th>V<sub>E</sub></th><td>{{ "%.3f"|format(result.ve_v) }} V</td></tr>
+      <tr><th>V<sub>C</sub></th><td>{{ "%.3f"|format(result.vc_v) }} V</td></tr>
+      <tr><th>V<sub>CE</sub></th><td>{{ "%.3f"|format(result.vce_v) }} V</td></tr>
+    </table>
+    {% if result.warning %}<div class="warn">{{ result.warning }}</div>{% endif %}
+  </div>
+  {% endif %}
+</main>
+
+<script>
+  // Show only the fields used by the selected mode.
+  const modeSelect = document.getElementById('mode');
+  function updateFields() {
+    document.querySelectorAll('[data-only]').forEach(function (group) {
+      const visible = group.dataset.only.split(' ').includes(modeSelect.value);
+      group.hidden = !visible;
+      group.querySelectorAll('input').forEach(function (input) { input.disabled = !visible; });
+    });
+  }
+  modeSelect.addEventListener('change', updateFields);
+  updateFields();
+</script>
+</body>
+</html>
