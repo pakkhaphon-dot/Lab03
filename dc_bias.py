@@ -20,6 +20,10 @@ def _finish(vcc, rc, beta, vbe, ib, re_ohms):
         "vc_v": vc,
         "vce_v": vce,
         "ic_ma": ic_a * 1e3,
+        # Extra quantities carried over from the Lab 02 results table.
+        "ib_ma": ib * 1e3,
+        "ie_ma": ie_a * 1e3,
+        "region": "Cutoff" if ib <= 0 else ("Saturation" if vce <= 0.2 else "Forward-Active"),
     }
     if ib <= 0 or vce <= 0.2:
         result["warning"] = (
@@ -46,4 +50,7 @@ def voltage_divider_bias(vcc, rc, beta, vbe, r1, r2, re):
     vth = vcc * r2 / (r1 + r2)
     rth = r1 * r2 / (r1 + r2)
     ib = (vth - vbe) / (rth + (beta + 1) * re)
-    return _finish(vcc, rc, beta, vbe, ib, re)
+    result = _finish(vcc, rc, beta, vbe, ib, re)
+    result["vth_v"] = vth
+    result["rth_kohm"] = rth / 1e3
+    return result

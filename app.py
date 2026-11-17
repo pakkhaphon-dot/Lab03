@@ -70,11 +70,6 @@ def index():
 
     # Raw strings for the form and circuit diagram; missing fields use defaults.
     values = {name: source.get(name, default) for name, default in DEFAULTS.items()}
-    # Mode links carry the current values so switching circuits keeps the inputs.
-    mode_urls = {
-        key: "/?" + urlencode({"mode": key, **values})
-        for key in MODE_FIELDS
-    }
 
     error = None
     result = None
@@ -100,6 +95,23 @@ def index():
                 error = str(exc)
             except ZeroDivisionError:
                 error = "ตัวหารเป็นศูนย์ กรุณาตรวจค่าที่กรอก"
+
+        # Lab 02 extras (IB, IE, VTH, RTH, region) are appended to the mode
+        # links so the URL itself carries the values from last week's app.
+        if result is not None and mode == "divider":
+            values.update({
+                "ib": f"{result['ib_ma']:.6f}",
+                "ie": f"{result['ie_ma']:.6f}",
+                "vth": f"{result['vth_v']:.6f}",
+                "rth": f"{result['rth_kohm']:.6f}",
+                "region": result["region"],
+            })
+
+    # Mode links carry the current values so switching circuits keeps the inputs.
+    mode_urls = {
+        key: "/?" + urlencode({"mode": key, **values})
+        for key in MODE_FIELDS
+    }
 
     return render_template(
         "index.html",

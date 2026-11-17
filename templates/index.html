@@ -110,12 +110,20 @@
   {% if result %}
   <div class="card result">
     <strong>ผลลัพธ์ · โหมด {{ mode }}</strong>
+    {% if result.vth_v is defined %}<p><small>ค่าจาก Lab 02 (สัปดาห์ที่แล้ว) ถูกเพิ่มเข้าในลิงก์และตารางนี้</small></p>{% endif %}
     <table>
+      {% if result.vth_v is defined %}
+      <tr><th>V<sub>TH</sub> · Lab 02</th><td>{{ "%.3f"|format(result.vth_v) }} V</td></tr>
+      <tr><th>R<sub>TH</sub> · Lab 02</th><td>{{ "%.3f"|format(result.rth_kohm) }} kΩ</td></tr>
+      {% endif %}
+      <tr><th>I<sub>B</sub> · Lab 02</th><td>{{ "%.3f"|format(result.ib_ma) }} mA</td></tr>
       <tr><th>I<sub>C</sub></th><td>{{ "%.3f"|format(result.ic_ma) }} mA</td></tr>
+      <tr><th>I<sub>E</sub> · Lab 02</th><td>{{ "%.3f"|format(result.ie_ma) }} mA</td></tr>
       <tr><th>V<sub>B</sub></th><td>{{ "%.3f"|format(result.vb_v) }} V</td></tr>
       <tr><th>V<sub>E</sub></th><td>{{ "%.3f"|format(result.ve_v) }} V</td></tr>
       <tr><th>V<sub>C</sub></th><td>{{ "%.3f"|format(result.vc_v) }} V</td></tr>
       <tr><th>V<sub>CE</sub></th><td>{{ "%.3f"|format(result.vce_v) }} V</td></tr>
+      <tr><th>Region · Lab 02</th><td>{{ result.region }}</td></tr>
     </table>
     {% if result.warning %}<div class="warn">{{ result.warning }}</div>{% endif %}
   </div>
