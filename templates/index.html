@@ -13,6 +13,10 @@
     input,select{font:inherit;padding:8px 10px;border:1px solid #9db5c6;border-radius:6px;max-width:100%}
     input{width:220px}
     button{margin-top:20px;background:#07766e;color:#fff;border:0;border-radius:7px;padding:10px 22px;font:inherit;cursor:pointer}
+    .mode-links{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+    .mode-links a{border:1px solid #9db5c6;border-radius:7px;padding:6px 12px;text-decoration:none;color:#103658;background:#f8fbfd}
+    .mode-links a.active{background:#07766e;color:#fff;border-color:#07766e}
+    .circuit-svg{display:block;width:100%;max-width:520px;height:auto;margin:auto}
     .error{background:#fff5e8;border-left:4px solid #823c17;color:#67361f;padding:12px 15px;border-radius:4px}
     .result{background:#e8f6f2;border-left:4px solid #07766e;padding:12px 15px;border-radius:4px}
     .warn{background:#fff5e8;border-left:4px solid #823c17;padding:10px 12px;border-radius:4px;margin-top:10px}
@@ -25,6 +29,19 @@
 <main class="shell">
   <h1>Lab 03 · BJT DC Bias Calculator</h1>
   <p>เลือกวงจร กรอกค่าตามหน่วยที่แสดง แล้วกดคำนวณ (แบบจำลอง DC Forward Active)</p>
+
+  <nav class="mode-links" aria-label="เลือกโหมดและกรอกค่า">
+    <a href="/?mode=divider" class="{{ 'active' if mode == 'divider' else '' }}">Voltage Divider Bias</a>
+    <a href="/?mode=fixed" class="{{ 'active' if mode == 'fixed' else '' }}">Fixed Bias</a>
+    <a href="/?mode=emitter" class="{{ 'active' if mode == 'emitter' else '' }}">Emitter Bias</a>
+  </nav>
+
+  <div class="card">
+    <strong>ภาพวงจร · {{ mode }}</strong>
+    {% if mode == 'fixed' %}{% include 'circuit_fixed.html' %}
+    {% elif mode == 'emitter' %}{% include 'circuit_emitter.html' %}
+    {% else %}{% include 'circuit_divider.html' %}{% endif %}
+  </div>
 
   <div class="card">
     <form method="post" action="/" id="bias-form">

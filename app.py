@@ -61,7 +61,11 @@ def _parse_positive(form, name):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    mode = request.form.get("mode", "divider") if request.method == "POST" else "divider"
+    mode = (
+        request.form.get("mode", "divider")
+        if request.method == "POST"
+        else request.args.get("mode", "divider")
+    )
     error = None
     result = None
 

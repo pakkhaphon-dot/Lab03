@@ -1,0 +1,34 @@
+<svg viewBox="0 0 480 320" role="img" aria-label="Voltage Divider Bias circuit diagram" class="circuit-svg">
+  <g fill="none" stroke="#103658" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 35 H300"/>
+    <!-- RC -->
+    <path d="M300 35 V43 l-7 8 l14 10 l-14 10 l14 10 l-7 8 V120"/>
+    <path d="M300 120 V130"/>
+    <!-- transistor -->
+    <path d="M250 150 V200"/>
+    <path d="M250 165 L300 130"/>
+    <path d="M250 195 L300 230"/>
+    <path d="M286 221 L300 230 L289 236" fill="#103658" stroke="none"/>
+    <!-- R1 / R2 divider -->
+    <path d="M130 35 V43 l-7 8 l14 10 l-14 10 l14 10 l-7 8 V160"/>
+    <path d="M130 160 V180 H250"/>
+    <path d="M130 180 V188 l-7 8 l14 10 l-14 10 l14 10 l-7 8 V240"/>
+    <path d="M130 240 V265"/>
+    <path d="M112 265 H148 M118 271 H142 M124 277 H136"/>
+    <!-- RE -->
+    <path d="M300 230 V238 l-7 8 l14 10 l-14 10 l14 10 l-7 8 V275"/>
+    <path d="M282 275 H318 M288 281 H312 M294 287 H306"/>
+  </g>
+  <g font-family="Tahoma,Arial,sans-serif" font-size="15" fill="#103658">
+    <text x="20" y="42" font-weight="bold">VCC = {{ form.get('vcc', defaults.vcc) }} V</text>
+    <text x="312" y="80">RC {{ form.get('rc', defaults.rc) }} kΩ</text>
+    <text x="44" y="105">R1 {{ form.get('r1', defaults.r1) }} kΩ</text>
+    <text x="44" y="225">R2 {{ form.get('r2', defaults.r2) }} kΩ</text>
+    <text x="312" y="255">RE {{ form.get('re', defaults.re) }} kΩ</text>
+    <text x="312" y="200">C</text>
+    <text x="258" y="185">B</text>
+    <text x="312" y="226">E</text>
+    <text x="200" y="228" font-weight="bold">NPN</text>
+    <text x="196" y="312" font-size="13" fill="#415e71">Voltage Divider Bias · ผลเดิมจาก Lab 2 (ไม่เปลี่ยนสมการ)</text>
+  </g>
+</svg>

@@ -1,0 +1,29 @@
+<svg viewBox="0 0 480 320" role="img" aria-label="Emitter Bias circuit diagram" class="circuit-svg">
+  <g fill="none" stroke="#103658" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 35 H300"/>
+    <!-- RC -->
+    <path d="M300 35 V43 l-7 8 l14 10 l-14 10 l14 10 l-7 8 V120"/>
+    <path d="M300 120 V130"/>
+    <!-- transistor -->
+    <path d="M250 150 V200"/>
+    <path d="M250 165 L300 130"/>
+    <path d="M250 195 L300 230"/>
+    <path d="M286 221 L300 230 L289 236" fill="#103658" stroke="none"/>
+    <!-- RB branch -->
+    <path d="M130 35 V43 l-7 8 l14 10 l-14 10 l14 10 l-7 8 V170 H250"/>
+    <!-- RE -->
+    <path d="M300 230 V238 l-7 8 l14 10 l-14 10 l14 10 l-7 8 V275"/>
+    <path d="M282 275 H318 M288 281 H312 M294 287 H306"/>
+  </g>
+  <g font-family="Tahoma,Arial,sans-serif" font-size="15" fill="#103658">
+    <text x="20" y="42" font-weight="bold">VCC = {{ form.get('vcc', defaults.vcc) }} V</text>
+    <text x="312" y="80">RC {{ form.get('rc', defaults.rc) }} kΩ</text>
+    <text x="44" y="115">RB {{ form.get('rb', defaults.rb) }} MΩ</text>
+    <text x="312" y="255">RE {{ form.get('re', defaults.re) }} kΩ</text>
+    <text x="312" y="200">C</text>
+    <text x="258" y="185">B</text>
+    <text x="312" y="226">E</text>
+    <text x="200" y="228" font-weight="bold">NPN</text>
+    <text x="196" y="312" font-size="13" fill="#415e71">Emitter Bias · Rᴇ ต่อจาก Emitter ลงกราวด์</text>
+  </g>
+</svg>
