@@ -1,4 +1,4 @@
-<svg viewBox="0 0 480 320" role="img" aria-label="Voltage Divider Bias circuit diagram" class="circuit-svg">
+<svg viewBox="0 0 480 320" role="img" aria-label="Voltage Divider Bias circuit diagram · β {{ values.get('beta') }} · VBE {{ values.get('vbe') }} V" class="circuit-svg">
   <g fill="none" stroke="#103658" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M60 35 H300"/>
     <!-- RC -->
@@ -20,15 +20,19 @@
     <path d="M282 275 H318 M288 281 H312 M294 287 H306"/>
   </g>
   <g font-family="Tahoma,Arial,sans-serif" font-size="15" fill="#103658">
-    <text x="20" y="42" font-weight="bold">VCC = {{ form.get('vcc', defaults.vcc) }} V</text>
-    <text x="312" y="80">RC {{ form.get('rc', defaults.rc) }} kΩ</text>
-    <text x="44" y="105">R1 {{ form.get('r1', defaults.r1) }} kΩ</text>
-    <text x="44" y="225">R2 {{ form.get('r2', defaults.r2) }} kΩ</text>
-    <text x="312" y="255">RE {{ form.get('re', defaults.re) }} kΩ</text>
+    <text x="20" y="42" font-weight="bold">VCC = {{ values.get('vcc') }} V</text>
+    <text x="312" y="80">RC {{ values.get('rc') }} kΩ</text>
+    <text x="44" y="105">R1 {{ values.get('r1') }} kΩ</text>
+    <text x="44" y="225">R2 {{ values.get('r2') }} kΩ</text>
+    <text x="312" y="255">RE {{ values.get('re') }} kΩ</text>
     <text x="312" y="200">C</text>
     <text x="258" y="185">B</text>
     <text x="312" y="226">E</text>
     <text x="200" y="228" font-weight="bold">NPN</text>
-    <text x="196" y="312" font-size="13" fill="#415e71">Voltage Divider Bias · ผลเดิมจาก Lab 2 (ไม่เปลี่ยนสมการ)</text>
+  </g>
+  <g font-family="Tahoma,Arial,sans-serif" font-size="13" fill="#415e71">
+    <text x="20" y="252">β = {{ values.get('beta') }}</text>
+    <text x="20" y="270">VBE = {{ values.get('vbe') }} V</text>
+    <text x="196" y="312">Voltage Divider Bias · ผลเดิมจาก Lab 2 (ไม่เปลี่ยนสมการ)</text>
   </g>
 </svg>

@@ -1,4 +1,4 @@
-<svg viewBox="0 0 480 320" role="img" aria-label="Fixed Bias circuit diagram" class="circuit-svg">
+<svg viewBox="0 0 480 320" role="img" aria-label="Fixed Bias circuit diagram · β {{ values.get('beta') }} · VBE {{ values.get('vbe') }} V" class="circuit-svg">
   <g fill="none" stroke="#103658" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
     <!-- top rail -->
     <path d="M60 35 H300"/>
@@ -18,13 +18,17 @@
     <path d="M282 265 H318 M288 271 H312 M294 277 H306"/>
   </g>
   <g font-family="Tahoma,Arial,sans-serif" font-size="15" fill="#103658">
-    <text x="20" y="42" font-weight="bold">VCC = {{ form.get('vcc', defaults.vcc) }} V</text>
-    <text x="312" y="80">RC {{ form.get('rc', defaults.rc) }} kΩ</text>
-    <text x="44" y="115">RB {{ form.get('rb', defaults.rb) }} MΩ</text>
+    <text x="20" y="42" font-weight="bold">VCC = {{ values.get('vcc') }} V</text>
+    <text x="312" y="80">RC {{ values.get('rc') }} kΩ</text>
+    <text x="44" y="115">RB {{ values.get('rb') }} MΩ</text>
     <text x="312" y="200">C</text>
     <text x="258" y="185">B</text>
     <text x="312" y="232">E</text>
     <text x="200" y="230" font-weight="bold">NPN</text>
-    <text x="196" y="305" font-size="13" fill="#415e71">Fixed Bias · Emitter ต่อกราวด์โดยตรง (Vᴇ = 0 V)</text>
+  </g>
+  <g font-family="Tahoma,Arial,sans-serif" font-size="13" fill="#415e71">
+    <text x="20" y="252">β = {{ values.get('beta') }}</text>
+    <text x="20" y="270">VBE = {{ values.get('vbe') }} V</text>
+    <text x="196" y="305">Fixed Bias · Emitter ต่อกราวด์โดยตรง (Vᴇ = 0 V)</text>
   </g>
 </svg>

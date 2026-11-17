@@ -31,9 +31,9 @@
   <p>เลือกวงจร กรอกค่าตามหน่วยที่แสดง แล้วกดคำนวณ (แบบจำลอง DC Forward Active)</p>
 
   <nav class="mode-links" aria-label="เลือกโหมดและกรอกค่า">
-    <a href="/?mode=divider" class="{{ 'active' if mode == 'divider' else '' }}">Voltage Divider Bias</a>
-    <a href="/?mode=fixed" class="{{ 'active' if mode == 'fixed' else '' }}">Fixed Bias</a>
-    <a href="/?mode=emitter" class="{{ 'active' if mode == 'emitter' else '' }}">Emitter Bias</a>
+    <a href="{{ mode_urls.divider }}" class="{{ 'active' if mode == 'divider' else '' }}">Voltage Divider Bias</a>
+    <a href="{{ mode_urls.fixed }}" class="{{ 'active' if mode == 'fixed' else '' }}">Fixed Bias</a>
+    <a href="{{ mode_urls.emitter }}" class="{{ 'active' if mode == 'emitter' else '' }}">Emitter Bias</a>
   </nav>
 
   <div class="card">
@@ -54,45 +54,45 @@
 
       <label for="vcc">V<sub>CC</sub> (V)</label>
       <input id="vcc" name="vcc" type="number" step="any"
-             value="{{ form.get('vcc', defaults.vcc) }}">
+             value="{{ values.get('vcc') }}">
 
       <label for="rc">R<sub>C</sub> (kΩ)</label>
       <input id="rc" name="rc" type="number" step="any"
-             value="{{ form.get('rc', defaults.rc) }}">
+             value="{{ values.get('rc') }}">
 
       <label for="beta">β</label>
       <input id="beta" name="beta" type="number" step="any"
-             value="{{ form.get('beta', defaults.beta) }}">
+             value="{{ values.get('beta') }}">
 
       <label for="vbe">V<sub>BE</sub> (V)</label>
       <input id="vbe" name="vbe" type="number" step="any"
-             value="{{ form.get('vbe', defaults.vbe) }}">
+             value="{{ values.get('vbe') }}">
 
       <div data-only="fixed">
         <label for="rb">R<sub>B</sub> (MΩ)</label>
         <input id="rb" name="rb" type="number" step="any"
-               value="{{ form.get('rb', defaults.rb) }}">
+               value="{{ values.get('rb') }}">
       </div>
 
       <div data-only="emitter">
         <label for="rb_emitter">R<sub>B</sub> (MΩ)</label>
         <input id="rb_emitter" name="rb" type="number" step="any"
-               value="{{ form.get('rb', defaults.rb) }}">
+               value="{{ values.get('rb') }}">
       </div>
 
       <div data-only="divider">
         <label for="r1">R<sub>1</sub> (kΩ)</label>
         <input id="r1" name="r1" type="number" step="any"
-               value="{{ form.get('r1', defaults.r1) }}">
+               value="{{ values.get('r1') }}">
         <label for="r2">R<sub>2</sub> (kΩ)</label>
         <input id="r2" name="r2" type="number" step="any"
-               value="{{ form.get('r2', defaults.r2) }}">
+               value="{{ values.get('r2') }}">
       </div>
 
       <div data-only="divider emitter">
         <label for="re">R<sub>E</sub> (kΩ)</label>
         <input id="re" name="re" type="number" step="any"
-               value="{{ form.get('re', defaults.re) }}">
+               value="{{ values.get('re') }}">
       </div>
 
       <button type="submit">คำนวณ</button>

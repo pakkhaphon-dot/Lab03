@@ -1,6 +1,7 @@
 """Lab 03 — BJT DC Bias web app (Flask + Jinja)."""
 
 import math
+from urllib.parse import urlencode
 
 from flask import Flask, render_template, request
 
@@ -61,11 +62,20 @@ def _parse_positive(form, name):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    mode = (
-        request.form.get("mode", "divider")
-        if request.method == "POST"
-        else request.args.get("mode", "divider")
-    )
+    # Both GET (mode links) and POST (calculate) supply the displayed values.
+    source = request.form if request.method == "POST" else request.args
+    mode = source.get("mode", "divider")
+    if request.method == "GET" and mode not in MODE_FIELDS:
+        mode = "divider"
+
+    # Raw strings for the form and circuit diagram; missing fields use defaults.
+    values = {name: source.get(name, default) for name, default in DEFAULTS.items()}
+    # Mode links carry the current values so switching circuits keeps the inputs.
+    mode_urls = {
+        key: "/?" + urlencode({"mode": key, **values})
+        for key in MODE_FIELDS
+    }
+
     error = None
     result = None
 
@@ -75,16 +85,16 @@ def index():
         else:
             try:
                 names = ("vcc", "rc", "beta", "vbe", *MODE_FIELDS[mode])
-                values = {
-                    name: _parse_positive(request.form, name) * SCALE_TO_OHMS[name]
+                parsed = {
+                    name: _parse_positive(source, name) * SCALE_TO_OHMS[name]
                     for name in names
                 }
                 result = CALCULATORS[mode](
-                    values["vcc"],
-                    values["rc"],
-                    values["beta"],
-                    values["vbe"],
-                    *(values[name] for name in MODE_FIELDS[mode]),
+                    parsed["vcc"],
+                    parsed["rc"],
+                    parsed["beta"],
+                    parsed["vbe"],
+                    *(parsed[name] for name in MODE_FIELDS[mode]),
                 )
             except ValueError as exc:
                 error = str(exc)
@@ -97,7 +107,8 @@ def index():
         modes=MODE_FIELDS,
         error=error,
         result=result,
-        form=request.form,
+        values=values,
+        mode_urls=mode_urls,
         defaults=DEFAULTS,
     )
 
