@@ -142,6 +142,20 @@
   }
   modeSelect.addEventListener('change', updateFields);
   updateFields();
+
+  // Keep the mode links in sync with the values being typed, before submit.
+  // The values can then be copied straight from the address bar / link href.
+  const modeLinks = Array.from(document.querySelectorAll('.mode-links a'));
+  const formInputs = Array.from(document.querySelectorAll('#bias-form input[name]'));
+  function syncModeLinks() {
+    modeLinks.forEach(function (link) {
+      const url = new URL(link.href, window.location.href);
+      formInputs.forEach(function (input) { url.searchParams.set(input.name, input.value); });
+      link.href = url.pathname + url.search;
+    });
+  }
+  document.getElementById('bias-form').addEventListener('input', syncModeLinks);
+  syncModeLinks();
 </script>
 </body>
 </html>
